@@ -1,0 +1,6 @@
+{
+  "name": "Senior Shield",
+  "description": "AI Scam Detector and safety companion protecting elderly pensioners from fraud calls, suspicious messages, and financial theft.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

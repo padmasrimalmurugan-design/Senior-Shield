@@ -1,0 +1,111 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile and safety preferences for senior citizens and pensioners.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The user UID matching the authenticated Google account."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "The pensioner's display name or nickname."
+        },
+        "language": {
+          "type": "string",
+          "enum": ["ENGLISH", "TAMIL"],
+          "description": "Preferred UI and speech language."
+        },
+        "emergencyContactName": {
+          "type": "string",
+          "description": "Name of primary caregiver or family emergency contact."
+        },
+        "emergencyContactPhone": {
+          "type": "string",
+          "description": "Phone number of primary caregiver or emergency contact."
+        },
+        "largeFontEnabled": {
+          "type": "boolean",
+          "description": "Accessibility toggle for larger readable fonts."
+        },
+        "autoTtsEnabled": {
+          "type": "boolean",
+          "description": "Auto-read scam warnings aloud via text-to-speech."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of record creation. Clients submit FieldValue.serverTimestamp()."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of record update. Clients submit FieldValue.serverTimestamp()."
+        }
+      },
+      "required": ["userId", "displayName", "language", "createdAt", "updatedAt"]
+    },
+    "ScamCheckLog": {
+      "title": "ScamCheckLog",
+      "description": "Historical audit log of checked suspicious messages or phone numbers for caregiver review.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Auto-generated document ID."
+        },
+        "userId": {
+          "type": "string",
+          "description": "The user UID who requested the scam check."
+        },
+        "type": {
+          "type": "string",
+          "enum": ["message", "call"],
+          "description": "Type of scam check performed."
+        },
+        "content": {
+          "type": "string",
+          "description": "The suspicious message text or caller claim/number inspected."
+        },
+        "riskLevel": {
+          "type": "string",
+          "enum": ["LOW_RISK", "SUSPICIOUS", "HIGH_RISK", "UNKNOWN"],
+          "description": "Evaluated scam risk level."
+        },
+        "headline": {
+          "type": "string",
+          "description": "Summary headline of the analysis."
+        },
+        "explanation": {
+          "type": "string",
+          "description": "Clear elderly-friendly explanation of why it was flagged."
+        },
+        "flaggedPhrases": {
+          "type": "array",
+          "description": "List of suspicious phrases detected in the input.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of inspection. Clients submit FieldValue.serverTimestamp()."
+        }
+      },
+      "required": ["userId", "type", "content", "riskLevel", "headline", "explanation", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Stores individual user profile and safety configuration."
+    },
+    "/users/{userId}/checkLogs/{logId}": {
+      "schema": "ScamCheckLog",
+      "description": "Stores user scan and verification history."
+    }
+  }
+}
